@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,25 +47,26 @@ public class Controller {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<People> savePeople(@RequestBody People people) {
-        People newPeople = peopleServiceImpl.savePeople(people);
+    public ResponseEntity<List<People>> savePeople(@RequestBody People people) {
+        List<People> newPeople = peopleServiceImpl.savePeople(people);
         return ResponseEntity.ok(newPeople);
     }
 
-    @PostMapping
-    public ResponseEntity<People> modifyPeople(@RequestBody People updatedPeople) {
-        People people = peopleServiceImpl.getPeopleById(updatedPeople.getId());
+    @PutMapping("/{id}")
+    public ResponseEntity<List<People>> modifyPeople(@PathVariable("id") Long id, @RequestBody People updatedPeople) {
+        People people = peopleServiceImpl.getPeopleById(id);
         people.setFirstName(updatedPeople.getFirstName());
         people.setLastName(updatedPeople.getLastName());
         people.setEmail(updatedPeople.getEmail());
         people.setPhoneNumber(updatedPeople.getPhoneNumber());
+        final List<People> newpeople = peopleServiceImpl.savePeople(people);
 
-        return ResponseEntity.ok(people);
+        return ResponseEntity.ok(newpeople);
     }
 
     @DeleteMapping
-    public void deletePeople(@RequestBody Long id) {
-        peopleServiceImpl.deletePeople(id);
+    public List<People> deletePeople(@RequestBody Long id) {
+        return peopleServiceImpl.deletePeople(id);
     }
 }
 

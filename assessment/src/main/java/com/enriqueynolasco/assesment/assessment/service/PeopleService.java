@@ -9,7 +9,7 @@ public interface PeopleService {
 
     People getPeopleById(Long id);
 
-    People savePeople(People people);
+    List<People> savePeople(People people);
 
-    void deletePeople(Long id);
+    Object deletePeople(Long id);
 }

@@ -6,7 +6,6 @@ import com.enriqueynolasco.assesment.assessment.service.PeopleService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class PeopleServiceImpl implements PeopleService {
@@ -25,12 +24,14 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People savePeople(People people) {
-        return peopleRepository.save(people);
+    public List<People> savePeople(People people) {
+        peopleRepository.save(people);
+        return getAllPeople();
     }
 
     @Override
-    public void deletePeople(Long id) {
+    public List<People> deletePeople(Long id) {
         peopleRepository.deleteById(id);
+        return getAllPeople();
     }
 }

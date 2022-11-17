@@ -31,30 +31,35 @@ const Rows = (props) => {
   */
   const startEditingHandler = () => {
     setIsEditing(true);
-    const sampleList = [
-        {id:1, firstname:"Antonio", lastname:"Fernandez", phone: "634586366", email:"some@thing.com"},
-        {id:2, firstname:"Nolasco", lastname:"Jimenez", phone: "634767366", email:"aaaaaa@thing.com"},
-        {id:3, firstname:"Federico", lastname:"Lomonaco", phone: "643586366", email:"dude@thing.com"}
-    ];
-    setListOfQs(sampleList);
-  };
-
-  useEffect(() => {
-    if (listOfQs.length !== 0) {
-        setIsEditing(true);
-        setShowList(true);
-      }
-  }, [listOfQs]);
-
-  const reFetchData = () => {
-    fetch("http://localhost:8081/questions/getall")
+    fetch("http://localhost:8081/people/all")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         setListOfQs([...new Set(data.map((option) => option))]);
-        console.log(data);
       });
+  };
+
+  useEffect(() => {
+    if (listOfQs.length !== 0) {
+      setIsEditing(true);
+      setShowList(true);
+    }
+  }, [listOfQs]);
+
+  const reFetchData = async () => {
+    setShowList(false);
+    await fetch("http://localhost:8081/people/all")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setListOfQs([...new Set(data.map((option) => option))]);
+      });
+  };
+
+  const renderRows = () => {
+    return (<ShowRows questionlist={listOfQs} onReloadData={reFetchData} />);
   }
 
   return (
@@ -63,10 +68,7 @@ const Rows = (props) => {
         <button onClick={startEditingHandler}>Access the database</button>
       )}
       {(isEditing && showList) && (
-        <ShowRows
-          questionlist={listOfQs}
-          onReloadData={reFetchData}
-        />
+        renderRows()
       )}
     </div>
   );
