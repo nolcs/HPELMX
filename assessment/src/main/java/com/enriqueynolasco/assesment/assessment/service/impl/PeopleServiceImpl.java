@@ -5,12 +5,11 @@ import com.enriqueynolasco.assesment.assessment.repository.PeopleRepository;
 import com.enriqueynolasco.assesment.assessment.service.PeopleService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+@Service
 public class PeopleServiceImpl implements PeopleService {
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     private PeopleRepository peopleRepository;

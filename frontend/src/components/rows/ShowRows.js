@@ -4,6 +4,7 @@ import RowElement from "./RowElement";
 
 const ShowRows = (props) => {
   const [rows, setRows] = useState(props.questionlist);
+  const [addingRow, setAddingRow] = useState(false);
 
   const removeRow = (item) => {
     //send request to remove element from database
@@ -20,23 +21,48 @@ const ShowRows = (props) => {
     props.onReloadData();
   };
 
-  return (<div>
-    <table>
-      <tbody>
-        <tr key={"header"}>
-          {Object.keys(rows[0]).map((key) => (
-            <th>{key}</th>
-          ))}
-        </tr>
-        {rows.map((item) => (
-          <tr key={item.id}>
-            <RowElement value={item} />
-            <button onClick={removeRow(item)}>delete</button>
+  const addRowHandler = () => {
+    setAddingRow(true);
+  };
+
+  return (
+    <div>
+      <table>
+        <tbody>
+          <tr key={"header"}>
+            {Object.keys(rows[0]).map((key) => (
+              <th>{key}</th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
-    <button >Add new row</button>
+          {rows.map((item) => (
+            <tr key={item.id}>
+              <RowElement value={item} />
+              <button onClick={removeRow(item)}>delete</button>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button onClick={addRowHandler}>Add new row</button>
+      (addingRow &&
+      <form>
+        <div>
+          <label>name</label>
+          <input type="text"></input>
+        </div>
+        <div>
+          <label>surname</label>
+          <input type="text"></input>
+        </div>
+        <div>
+          <label>phone</label>
+          <input type="text"></input>
+        </div>
+        <div>
+          <label>email</label>
+          <input type="text"></input>
+        </div>
+      </form>
+      )
     </div>
   );
 };
